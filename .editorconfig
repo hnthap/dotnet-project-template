@@ -1,0 +1,37 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{csproj,props,targets,slnx,xml,yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+# Layout is CSharpier's job; keep the IDE formatting rule out of its way
+dotnet_diagnostic.IDE0055.severity = none
+
+# The rules below fail the build (EnforceCodeStyleInBuild) and `make fmt-check`.
+# `make fmt` fixes them.
+
+# Unnecessary using directive (needs GenerateDocumentationFile, see Directory.Build.props)
+dotnet_diagnostic.IDE0005.severity = warning
+
+# File-scoped namespaces
+csharp_style_namespace_declarations = file_scoped
+dotnet_diagnostic.IDE0161.severity = warning
+
+# Braces on every if/else/for/while
+csharp_prefer_braces = true
+dotnet_diagnostic.IDE0011.severity = warning
+
+# Explicit accessibility modifiers
+dotnet_style_require_accessibility_modifiers = for_non_interface_members
+dotnet_diagnostic.IDE0040.severity = warning

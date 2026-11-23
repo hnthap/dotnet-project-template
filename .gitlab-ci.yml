@@ -1,0 +1,29 @@
+# Runs the same `make ci` as local development, on the same distro-built
+# .NET SDK band (10.0.1xx, see global.json). Pin the image by digest once settled.
+default:
+  image: almalinux:9
+
+variables:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_NOLOGO: "1"
+  # Inside the project dir so GitLab can cache it; ignored by .gitignore
+  NUGET_PACKAGES: "$CI_PROJECT_DIR/.nuget/packages"
+
+ci:
+  stage: test
+  before_script:
+    - dnf install -y --setopt=install_weak_deps=False dotnet-sdk-10.0 make git-core
+    # `make lockfiles` runs git; avoid "dubious ownership" if the runner's uid differs
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+  script:
+    - make ci
+  cache:
+    key:
+      files: [Directory.Packages.props, dotnet-tools.json]
+    paths: [.nuget/packages]
+  artifacts:
+    when: always
+    paths: [artifacts/]
+    reports:
+      junit: artifacts/test-results/*.junit.xml
+    expire_in: 1 week

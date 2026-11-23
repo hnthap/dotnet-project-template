@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <!-- Type safety -->
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>NU1900;NU1901;NU1902</WarningsNotAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!-- Lets IDE0005 (unnecessary using) be reported at build time... -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- ...without requiring XML docs on every public member -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <!-- Reproducible restores: commit packages.lock.json -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+
+    <!-- Vulnerability audit at restore, including transitive packages -->
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+
+    <!-- Miscellaneous -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+</Project>
