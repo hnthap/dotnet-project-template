@@ -1,3 +1,4 @@
 {
-    "dotnet.server.useOmnisharp": false
+    "dotnet.server.useOmnisharp": false,
+    "files.eol": "\n"
 }
