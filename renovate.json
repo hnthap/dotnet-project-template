@@ -1,0 +1,23 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:recommended"],
+    "osvVulnerabilityAlerts": true,
+    "packageRules": [
+        {
+            "description": "The distro package (dotnet-sdk-10.0) supplies the SDK; global.json only pins its band",
+            "matchDepTypes": ["dotnet-sdk"],
+            "enabled": false
+        },
+        {
+            "description": "ASP.NET Core packages are released together; update them in one merge request",
+            "matchPackageNames": ["/^Microsoft\\.AspNetCore\\./"],
+            "groupName": "ASP.NET Core"
+        },
+        {
+            "description": "A new .NET major version also needs a new SDK band and target framework; upgrade by hand",
+            "matchPackageNames": ["/^Microsoft\\.AspNetCore\\./", "/^Microsoft\\.Extensions\\./"],
+            "matchUpdateTypes": ["major"],
+            "enabled": false
+        }
+    ]
+}
