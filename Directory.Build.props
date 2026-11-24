@@ -22,4 +22,15 @@
     <!-- Miscellaneous -->
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
+
+  <!--
+    An editor on Windows and builds in WSL share this folder, and restore writes
+    OS-specific paths into obj/. Windows builds get their own bin/ and obj/.
+  -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <BaseOutputPath>bin/windows/</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj/windows/</BaseIntermediateOutputPath>
+    <!-- Keep the files WSL generates in bin/ and obj/ out of the Windows build -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);bin/**;obj/**</DefaultItemExcludes>
+  </PropertyGroup>
 </Project>
