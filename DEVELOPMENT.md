@@ -18,7 +18,48 @@ sudo dnf install -y make git dotnet-sdk-10.0
 | `make`          | Everything CI runs: lock files, format, licenses, build, test, publish |
 | `make fmt`      | Format the code and apply code-style fixes                |
 | `make test`     | Restore, build and run the tests                          |
+| `make image`    | Build the container image into `artifacts/image.tar.gz`   |
 | `make clean`    | Remove `bin/`, `obj/` and `artifacts/`                    |
+
+## Running the API
+
+```bash
+dotnet run --project src/Api
+```
+
+The API starts at http://localhost:5200 in the Development environment.
+Press Ctrl+C to stop it.
+
+| Path               | Returns                                 |
+| ------------------ | --------------------------------------- |
+| `/healthz`         | `Healthy` while the API is running      |
+| `/openapi/v1.json` | The OpenAPI document (Development only) |
+
+## Versions and releases
+
+The version comes from git tags. `make` stamps it into the assemblies and
+uses it as the container image tag:
+
+| Commit                   | Version                     |
+| ------------------------ | --------------------------- |
+| Tagged `v1.2.0`          | `1.2.0`                     |
+| 5 commits after `v1.2.0` | `1.2.0-5-g789abcd`          |
+| No `v` tag yet           | `0.0.0-5-g789abcd`          |
+| With uncommitted changes | Any of the above + `-dirty` |
+
+To release, tag the commit and push the tag:
+
+```bash
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+CI then pushes the image `1.2.0`. Every commit to the default branch also
+gets an image, tagged with its version, such as `1.2.0-5-g789abcd`.
+
+Pick the number by [Semantic Versioning](https://semver.org): bump MAJOR for
+breaking API changes, MINOR for new features, and PATCH for fixes. Don't move
+or reuse a pushed tag, because an image with that version already exists.
 
 ## Adding or updating a package
 
